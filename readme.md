@@ -23,7 +23,6 @@ services:
       - NET_RAW      # Required for iptables
     security_opt:
       - no-new-privileges:true
-    read_only: true
     tmpfs:
       - /tmp:size=10M
       - /run:size=5M
