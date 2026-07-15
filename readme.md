@@ -11,7 +11,7 @@ To run the microsocks proxy server in Docker, just write the following content t
 ```yaml
 services:
   microsocks:
-    build: .
+    image: adierebel/microsocks-alpine
     container_name: microsocks
     restart: always
     ports:
