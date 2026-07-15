@@ -1,0 +1,41 @@
+services:
+  microsocks:
+    build: .
+    container_name: microsocks
+    restart: always
+    ports:
+      - "1080:1080" # [host]:[container]
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_ADMIN    # Required for iptables firewall rules
+      - NET_RAW      # Required for iptables
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=10M
+      - /run:size=5M
+    mem_limit: 64m
+    cpus: 0.5
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    networks:
+      - proxy_net
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
+      - net.ipv6.conf.default.disable_ipv6=1
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.ip_forward=1
+    environment:
+      - PROXY_USERNAME=   # Set both username and password to enable SOCKS5 auth
+      - PROXY_PASSWORD=
+
+networks:
+  proxy_net:
+    driver: bridge
+    internal: false   # Needs internet access
+    ipam:
+      config:
+        - subnet: 10.255.255.0/24
+  
