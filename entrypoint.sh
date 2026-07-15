@@ -56,15 +56,15 @@ iptables -A FORWARD -j ACCEPT
 
 # OUTPUT rules: prevent proxy from reaching internal networks
 # microsocks outbound connections use OUTPUT, not FORWARD!
-# Allow DNS first (needed before blocking)
+# ESTABLISHED first — DNS responses and return traffic must be allowed early
+iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Allow DNS (outbound queries to 1.1.1.1, 8.8.8.8)
 iptables -A OUTPUT -p tcp --dport 53 -j ACCEPT
 iptables -A OUTPUT -p udp --dport 53 -j ACCEPT
 
 # Allow loopback
 iptables -A OUTPUT -o lo -j ACCEPT
-
-# Allow established/related (return traffic)
-iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # Block RFC1918 from proxy itself
 iptables -A OUTPUT -d 10.0.0.0/8 -j DROP
