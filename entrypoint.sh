@@ -82,7 +82,7 @@ echo "* Firewall configured: internal networks blocked"
 echo "* Running microsocks server..."
 MICROSOCKS_OPTS="-b 0.0.0.0 -i 0.0.0.0 -p 1080"
 if [ -n "$PROXY_USERNAME" ] && [ -n "$PROXY_PASSWORD" ]; then
-    MICROSOCKS_OPTS="$MICROSOCKS_OPTS -1 -u \"$PROXY_USERNAME\" -P \"$PROXY_PASSWORD\""
+    MICROSOCKS_OPTS="$MICROSOCKS_OPTS -1 -u $PROXY_USERNAME -P $PROXY_PASSWORD"
     echo "* SOCKS5 Server is active on 0.0.0.0:1080 with AUTHENTICATION"
 else
     echo "* SOCKS5 Server is active on 0.0.0.0:1080"
